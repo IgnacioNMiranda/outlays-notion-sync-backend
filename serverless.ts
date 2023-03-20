@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
+import outlays from '@functions/outlays';
 
 const serverlessConfiguration: AWS = {
   service: 'outlays-notion-sync-api',
@@ -19,7 +19,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { hello },
+  functions: { outlays },
   package: { individually: true },
   custom: {
     esbuild: {
