@@ -1,5 +1,5 @@
 {
-  "name": "outlays-notion-sync-api",
+  "name": "api-outlays-notion-sync",
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",

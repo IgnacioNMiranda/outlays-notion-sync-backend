@@ -2,9 +2,9 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway'
 import { formatJSONResponse } from '@libs/api-gateway'
 import { middyfy } from '@libs/lambda'
 import { CreateOutlayDTO } from '@interfaces/dtos/create-outlay-dto'
+import { createOutlay } from '@services/notion/common'
 
 import schema from './schema'
-import { createOutlay } from '../../services/notion/common'
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   let body: CreateOutlayDTO

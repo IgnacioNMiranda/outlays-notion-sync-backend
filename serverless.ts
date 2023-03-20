@@ -3,7 +3,7 @@ import type { AWS } from '@serverless/typescript'
 import outlays from '@functions/outlays'
 
 const serverlessConfiguration: AWS = {
-  service: 'outlays-notion-sync-api',
+  service: 'api-outlays-notion-sync',
   frameworkVersion: '3',
   useDotenv: true,
   plugins: ['serverless-esbuild', 'serverless-offline'],
