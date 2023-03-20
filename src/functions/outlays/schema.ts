@@ -4,8 +4,11 @@ const schema: JSONSchema7 =  {
   type: "object",
   properties: {
     name: { type: 'string' },
-    paymentMethod: { type: 'array', minItems: 1, items: { type: 'string'} }
+    customDate: { type: 'string'},
+    tags: { type: 'array', minItems: 1, items: { type: 'string'} },
+    price: { type: 'number'},
+    paymentMethod: { type: 'string'}
   },
-  required: ['name', 'paymentMethod']
+  required: ['name', 'tags', 'price', 'paymentMethod']
 } as const;
 export default schema as any
