@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
+  "packageManager": "pnpm@7.29.1",
   "scripts": {
     "dev": "sls offline start",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +13,8 @@
   },
   "dependencies": {
     "@middy/core": "^4.2.7",
-    "@middy/http-json-body-parser": "^4.2.7"
+    "@middy/http-json-body-parser": "^4.2.7",
+    "@notionhq/client": "^2.2.3"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.27.0",
