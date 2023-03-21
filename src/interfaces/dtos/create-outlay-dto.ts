@@ -1,6 +1,6 @@
 export interface CreateOutlayDTO {
   name: string
-  customDate: Date
+  date: string
   tags: string[]
   price: number
   paymentMethod: string
