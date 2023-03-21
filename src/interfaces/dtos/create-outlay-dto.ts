@@ -1,4 +1,4 @@
-export interface CreateOutlayDTO {
+export interface CreateOutlayPageDTO {
   name: string
   date: string
   tags: string[]
