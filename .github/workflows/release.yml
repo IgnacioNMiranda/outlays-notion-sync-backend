@@ -48,5 +48,5 @@ jobs:
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
-      #- name: Deploy
-      # run: pnpm deploy
+      - name: Deploy
+        run: pnpm deploy
