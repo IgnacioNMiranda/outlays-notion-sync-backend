@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 jobs:
   release:
     name: Release
@@ -22,6 +18,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v2
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -37,5 +36,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Deploy
-        run: pnpm deploy
+      - name: Serverless AWS authentication
+        run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+
+      - name: Creating env file
+        run: doppler secrets download --no-file --format yaml > .env.yml
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
+      #- name: Deploy
+      # run: pnpm deploy
