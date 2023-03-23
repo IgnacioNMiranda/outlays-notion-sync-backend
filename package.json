@@ -5,8 +5,8 @@
   "main": "serverless.ts",
   "packageManager": "pnpm@7.29.1",
   "scripts": {
-    "dev": "serverless offline start",
-    "deploy": "serverless deploy"
+    "dev": "sls offline start",
+    "deploy": "sls deploy"
   },
   "engines": {
     "node": ">=18.14.0"
