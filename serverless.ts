@@ -64,24 +64,26 @@ const serverlessConfiguration: AWS = {
             CloudWatchMetricsEnabled: true,
             MetricName: 'ApiGateway-HTTP-Flood-Prevent-Metric',
           },
-          Rules: {
-            Name: 'HTTP-Flood-Prevent-Rule',
-            Priority: 0,
-            Action: {
-              Block: {},
-            },
-            VisibilityConfig: {
-              SampledRequestsEnabled: true,
-              CloudWatchMetricsEnabled: true,
-              MetricName: 'HTTP-Flood-Prevent-Rule-Metric',
-            },
-            Statement: {
-              RateBasedStatement: {
-                AggregateKeyType: 'IP',
-                Limit: 2000,
+          Rules: [
+            {
+              Name: 'HTTP-Flood-Prevent-Rule',
+              Priority: 0,
+              Action: {
+                Block: {},
+              },
+              VisibilityConfig: {
+                SampledRequestsEnabled: true,
+                CloudWatchMetricsEnabled: true,
+                MetricName: 'HTTP-Flood-Prevent-Rule-Metric',
+              },
+              Statement: {
+                RateBasedStatement: {
+                  AggregateKeyType: 'IP',
+                  Limit: 2000,
+                },
               },
             },
-          },
+          ],
         },
       },
     },
