@@ -13,6 +13,9 @@ export default {
             'application/json': schema,
           },
         },
+        authorizer: {
+          name: 'customLambdaAuthorizer',
+        },
       },
     },
   ],

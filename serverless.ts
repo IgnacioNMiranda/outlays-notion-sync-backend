@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript'
 
 import outlays from '@functions/outlays'
+import customLambdaAuthorizer from '@functions/authorizer'
 
 const serverlessConfiguration: AWS = {
   service: 'outlays-notion-sync-backend',
@@ -13,6 +14,16 @@ const serverlessConfiguration: AWS = {
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
+    },
+    httpApi: {
+      authorizers: {
+        customLambdaAuthorizer: {
+          type: 'request',
+          functionName: 'customLambdaAuthorizer',
+          enableSimpleResponses: true,
+          payloadVersion: '2.0',
+        },
+      },
     },
     stage: '${opt:stage, "dev"}',
     environment: {
@@ -31,10 +42,11 @@ const serverlessConfiguration: AWS = {
       NOTION_YEARS_NAME_PROPERTY_KEY: '${file(.env.yml):NOTION_YEARS_NAME_PROPERTY_KEY}',
       NOTION_CARD_PAYMENTS_DATABASE_ID: '${file(.env.yml):NOTION_CARD_PAYMENTS_DATABASE_ID}',
       NOTION_CARD_PAYMENTS_NAME_PROPERTY_KEY: '${file(.env.yml):NOTION_CARD_PAYMENTS_NAME_PROPERTY_KEY}',
+      AUTH_TOKEN: '${file(.env.yml):AUTH_TOKEN}',
     },
   },
   // import the function via paths
-  functions: { outlays },
+  functions: { outlays, customLambdaAuthorizer },
   package: { individually: true },
   resources: {
     Resources: {
@@ -85,7 +97,7 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
-    associateWa: {
+    associateWaf: {
       name: '${self:resources.Resources.WAFRegionalWebACL.Properties.Name}',
     },
   },
