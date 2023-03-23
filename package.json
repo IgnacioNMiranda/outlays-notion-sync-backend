@@ -6,7 +6,7 @@
   "packageManager": "pnpm@7.29.1",
   "scripts": {
     "dev": "sls offline start",
-    "deploy": "sls deploy"
+    "deploy-sls": "sls deploy"
   },
   "engines": {
     "node": ">=18.14.0"
