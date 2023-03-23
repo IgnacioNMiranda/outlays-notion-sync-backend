@@ -1,12 +1,8 @@
-import { APIGatewayRequestAuthorizerEventV2, APIGatewaySimpleAuthorizerResult } from 'aws-lambda'
+import { APIGatewaySimpleAuthorizerResult, APIGatewayTokenAuthorizerEvent } from 'aws-lambda'
 import { environment } from '../../environment'
 
-const handler = async (event: APIGatewayRequestAuthorizerEventV2): Promise<APIGatewaySimpleAuthorizerResult> => {
-  if (
-    !event.identitySource ||
-    typeof event.identitySource !== 'string' ||
-    event.identitySource !== `Bearer ${environment.authToken}`
-  )
+const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewaySimpleAuthorizerResult> => {
+  if (event.authorizationToken !== `Bearer ${environment.authToken}`)
     return {
       isAuthorized: false,
     }
