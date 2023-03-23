@@ -11,6 +11,9 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
+    logs: {
+      httpApi: true,
+    },
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
