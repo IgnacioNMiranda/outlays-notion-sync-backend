@@ -22,5 +22,6 @@ const outlays: AWS['functions'][0] = {
       },
     },
   ],
+  timeout: 60,
 }
 export default outlays

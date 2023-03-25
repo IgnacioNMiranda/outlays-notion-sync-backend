@@ -50,3 +50,21 @@ export const getCardPaymentPageId = async (paymentMethod: string, monthName: str
   }
   return cardPaymentPageId
 }
+
+export const getTagsAndPaymentMethods = async () => {
+  const tags: string[] = []
+  const paymentMethods: string[] = []
+
+  const data = await notionClient.databases.retrieve({ database_id: environment.notion.outlaysDatabaseId })
+  if (data && 'properties' in data) {
+    const tagsProperty = data.properties[environment.notion.tagsPropertyKey]
+    const paymentMethodsProperty = data.properties[environment.notion.paymentMethodPropertyKey]
+    if (tagsProperty && 'multi_select' in tagsProperty) {
+      tags.push(...tagsProperty.multi_select.options.map((option) => option.name))
+    }
+    if (paymentMethodsProperty && 'select' in paymentMethodsProperty) {
+      paymentMethods.push(...paymentMethodsProperty.select.options.map((option) => option.name))
+    }
+  }
+  return { tags, paymentMethods }
+}

@@ -5,7 +5,7 @@ import { CreateOutlayPageDTO } from '@interfaces/dtos/create-outlay-dto'
 import { createOutlayPage } from '@services/notion/create-outlay-page'
 
 import schema from './schema'
-import { getCardPaymentPageId, getYearPageId } from '../../services/notion/utils'
+import { getCardPaymentPageId, getTagsAndPaymentMethods, getYearPageId } from '../../services/notion/utils'
 import { environment } from '../../environment'
 import { CreatePageResponse } from '@notionhq/client/build/src/api-endpoints'
 
@@ -15,6 +15,11 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
   else body = event.body as CreateOutlayPageDTO
 
   try {
+    const { tags, paymentMethods } = await getTagsAndPaymentMethods()
+
+    if (!body.tags.every((tag) => tags.find((notionTag) => notionTag === tag))) throw new Error('Invalid Tags')
+    if (!paymentMethods.includes(body.paymentMethod)) throw new Error('Invalid Payment Method')
+
     const createOutlay = async (data: CreateOutlayPageDTO, date: Date) => {
       const year = `${date.getFullYear()}`
       let monthName = date.toLocaleString('en-US', { month: 'long' })
@@ -63,7 +68,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
   } catch (error) {
     return formatJSONResponse(
       {
-        message: error.errorMessage ?? error,
+        message: error.errorMessage ?? error.message ?? error,
       },
       400,
     )
