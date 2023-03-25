@@ -11,7 +11,15 @@ export const createOutlayPage = async (
   try {
     const date = new Date(data.date)
     const year = `${date.getFullYear()}`
-    const monthName = date.toLocaleString('en-US', { month: 'long' })
+
+    let monthName = date.toLocaleString('en-US', { month: 'long' })
+    // date.getDate() starts in 0
+    if (date.getDate() + 1 >= environment.notion.creditChargeDay) {
+      const dateWithPlusMonth = new Date(date)
+      // If the credit charge day has passed, the outlay has to be considered in the next month
+      dateWithPlusMonth.setMonth(date.getMonth() + 1)
+      monthName = dateWithPlusMonth.toLocaleString('en-US', { month: 'long' })
+    }
 
     let cardPaymentPageId: string
     if (data.paymentMethod.includes('Credit')) {

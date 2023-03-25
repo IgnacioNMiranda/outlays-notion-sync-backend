@@ -11,6 +11,8 @@ export const environment = {
     purchaseYearPropertykey: process.env.NOTION_PURCHASE_YEAR_PROPERTY_KEY,
     cardPaymentsPropertykey: process.env.NOTION_CARD_PAYMENTS_PROPERTY_KEY,
 
+    creditChargeDay: parseInt(process.env.NOTION_CREDIT_CHARGE_DAY, 10),
+
     yearsDatabaseId: process.env.NOTION_YEARS_DATABASE_ID,
     yearsNamePropertyKey: process.env.NOTION_YEARS_NAME_PROPERTY_KEY,
 

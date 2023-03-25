@@ -33,6 +33,7 @@ const serverlessConfiguration: AWS = {
       NOTION_YEARS_NAME_PROPERTY_KEY: '${file(.env.yml):NOTION_YEARS_NAME_PROPERTY_KEY}',
       NOTION_CARD_PAYMENTS_DATABASE_ID: '${file(.env.yml):NOTION_CARD_PAYMENTS_DATABASE_ID}',
       NOTION_CARD_PAYMENTS_NAME_PROPERTY_KEY: '${file(.env.yml):NOTION_CARD_PAYMENTS_NAME_PROPERTY_KEY}',
+      NOTION_CREDIT_CHARGE_DAY: '${file(.env.yml):NOTION_CREDIT_CHARGE_DAY}',
       AUTH_TOKEN: '${file(.env.yml):AUTH_TOKEN}',
     },
   },
