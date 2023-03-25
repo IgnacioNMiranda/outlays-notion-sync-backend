@@ -15,10 +15,10 @@ const outlays: AWS['functions'][0] = {
             'application/json': schema,
           },
         },
-        authorizer: {
-          name: 'customLambdaAuthorizer',
-          type: 'request',
-        },
+        /**
+         * Passing the name and not an object makes the type to fallback to 'token'
+         */
+        authorizer: 'customLambdaAuthorizer',
       },
     },
   ],
