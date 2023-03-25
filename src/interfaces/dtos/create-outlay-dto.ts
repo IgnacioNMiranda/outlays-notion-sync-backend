@@ -4,4 +4,5 @@ export interface CreateOutlayPageDTO {
   tags: string[]
   price: number
   paymentMethod: string
+  installments?: number
 }

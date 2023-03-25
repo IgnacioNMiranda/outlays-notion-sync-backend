@@ -5,28 +5,69 @@ import { CreateOutlayPageDTO } from '@interfaces/dtos/create-outlay-dto'
 import { createOutlayPage } from '@services/notion/create-outlay-page'
 
 import schema from './schema'
+import { getCardPaymentPageId, getYearPageId } from '../../services/notion/utils'
+import { environment } from '../../environment'
+import { CreatePageResponse } from '@notionhq/client/build/src/api-endpoints'
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   let body: CreateOutlayPageDTO
   if (typeof event.body === 'string') body = JSON.parse(event.body) as CreateOutlayPageDTO
   else body = event.body as CreateOutlayPageDTO
 
-  const { data, error } = await createOutlayPage(body)
-  if (error)
+  try {
+    const createOutlay = async (data: CreateOutlayPageDTO, date: Date) => {
+      const year = `${date.getFullYear()}`
+      let monthName = date.toLocaleString('en-US', { month: 'long' })
+      // date.getDate() starts in 0
+      if (date.getDate() + 1 >= environment.notion.creditChargeDay) {
+        const dateWithPlusMonth = new Date(date)
+        // If the credit charge day has passed, the outlay has to be considered in the next month
+        dateWithPlusMonth.setMonth(date.getMonth() + 1)
+        monthName = dateWithPlusMonth.toLocaleString('en-US', { month: 'long' })
+      }
+
+      const cardPaymentPageId = await getCardPaymentPageId(data.paymentMethod, monthName, year)
+      const yearPageId = await getYearPageId(year)
+      return createOutlayPage(data, yearPageId, cardPaymentPageId)
+    }
+
+    const installments = body.installments ?? 1
+    const outlaysPromises: Promise<CreatePageResponse>[] = []
+    for (let i = 0; i < installments; i++) {
+      const outlayName = `${body.name}${installments > 1 ? ` (${i + 1})` : ''}`
+      let outlayDate = new Date(body.date)
+
+      if (i > 0) {
+        outlayDate.setMonth(outlayDate.getMonth() + i)
+      }
+
+      const outlayData: CreateOutlayPageDTO = {
+        ...body,
+        name: outlayName,
+        date: outlayDate.toISOString().split('T')[0],
+      }
+
+      console.info(`Creating '${outlayData.name}' Outlay`)
+      outlaysPromises.push(createOutlay(outlayData, outlayDate))
+    }
+    const outlays = await Promise.all(outlaysPromises)
+    console.info(`'${body.name}' Outlay created`)
+
     return formatJSONResponse(
       {
-        message: error,
+        message: `'${body.name}' outlay created.`,
+        data: outlays,
+      },
+      200,
+    )
+  } catch (error) {
+    return formatJSONResponse(
+      {
+        message: error.errorMessage ?? error,
       },
       400,
     )
-
-  return formatJSONResponse(
-    {
-      message: `'${body.name}' outlay created.`,
-      data,
-    },
-    200,
-  )
+  }
 }
 
 export const main = middyfy(handler)
