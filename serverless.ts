@@ -14,7 +14,7 @@ const serverlessConfiguration: AWS = {
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
-      apiKeys: ['api-key'],
+      apiKeys: ['${self:provider.stage}-api-key'],
     },
     stage: '${opt:stage, "dev"}',
     environment: {
