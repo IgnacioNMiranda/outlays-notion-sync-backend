@@ -49,4 +49,4 @@ jobs:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
       - name: Deploy
-        run: pnpm deploy-sls --stage prod
+        run: pnpm deploy-sls --stage prod --conceal
