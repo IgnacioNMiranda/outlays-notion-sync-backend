@@ -11,22 +11,10 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
-    logs: {
-      httpApi: true,
-    },
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
-    },
-    httpApi: {
-      authorizers: {
-        customLambdaAuthorizer: {
-          type: 'request',
-          functionName: 'customLambdaAuthorizer',
-          enableSimpleResponses: true,
-          payloadVersion: '2.0',
-        },
-      },
+      apiKeys: ['api-key'],
     },
     stage: '${opt:stage, "dev"}',
     environment: {

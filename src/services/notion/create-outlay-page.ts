@@ -95,6 +95,7 @@ export const createOutlayPage = async (
     console.info(`'${data.name}' Outlay created`)
     return { data: outlay, error: '' }
   } catch (error) {
+    if (error.errorMessage) return { data: null, error: error.errorMessage }
     return { data: null, error }
   }
 }
