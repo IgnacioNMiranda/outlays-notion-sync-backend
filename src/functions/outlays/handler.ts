@@ -37,6 +37,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     }
 
     const installments = body.installments ?? 1
+    const price = body.price / installments
+
     const outlaysPromises: Promise<CreatePageResponse>[] = []
     for (let i = 0; i < installments; i++) {
       const outlayName = `${body.name}${installments > 1 ? ` (${i + 1})` : ''}`
@@ -50,6 +52,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         ...body,
         name: outlayName,
         date: outlayDate.toISOString().split('T')[0],
+        price,
       }
 
       console.info(`Creating '${outlayData.name}' Outlay`)
