@@ -1,4 +1,4 @@
-# Serverless - AWS Node.js Typescript
+# Outlays Notion Sync
 
 This project has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
 
@@ -10,46 +10,18 @@ Depending on your preferred package manager, follow the instructions below to de
 
 > **Requirements**: NodeJS `lts/fermium (v.14.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
 
-### Using NPM
+### Using Pnpm
 
-- Run `npm i` to install the project dependencies
-- Run `npx sls deploy` to deploy this stack to AWS
+Install it using `npm i -g pnpm`
 
-### Using Yarn
-
-- Run `yarn` to install the project dependencies
-- Run `yarn sls deploy` to deploy this stack to AWS
-
-## Test your service
-
-This template contains a single lambda function triggered by an HTTP request made on the provisioned API Gateway REST API `/hello` route with `POST` method. The request body must be provided as `application/json`. The body structure is tested by API Gateway against `src/functions/hello/schema.ts` JSON-Schema definition: it must contain the `name` property.
-
-- requesting any other path than `/hello` with any other method than `POST` will result in API Gateway returning a `403` HTTP error code
-- sending a `POST` request to `/hello` with a payload **not** containing a string property named `name` will result in API Gateway returning a `400` HTTP error code
-- sending a `POST` request to `/hello` with a payload containing a string property named `name` will result in API Gateway returning a `200` HTTP status code with a message saluting the provided name and the detailed event processed by the lambda
-
-> :warning: As is, this template, once deployed, opens a **public** endpoint within your AWS account resources. Anybody with the URL can actively execute the API Gateway endpoint and the corresponding lambda. You should protect this endpoint with the authentication method of your choice.
+- Run `pnpm i` to install the project dependencies
+- Run `pnpm deploy-sls` to deploy this stack to AWS
 
 ### Locally
 
-In order to test the hello function locally, run the following command:
+In order to test the functions locally, run the following command to raise a local AWS instance using serverless-offline:
 
-- `npx sls invoke local -f hello --path src/functions/hello/mock.json` if you're using NPM
-- `yarn sls invoke local -f hello --path src/functions/hello/mock.json` if you're using Yarn
-
-Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
-
-### Remotely
-
-Copy and replace your `url` - found in Serverless `deploy` command output - and `name` parameter in the following `curl` command in your terminal or in Postman to test your newly deployed application.
-
-```
-curl --location --request POST 'https://myApiEndpoint/dev/hello' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "Frederic"
-}'
-```
+- `pnpm dev`
 
 ## Template features
 
@@ -59,29 +31,44 @@ The project code base is mainly located within the `src` folder. This folder is 
 
 - `functions` - containing code base and configuration for your lambda functions
 - `libs` - containing shared code base between your lambdas
+- `interfaces` - containing code base for interfaces that lambda functions need
+- `services` - containing code base for API connections and services for lambda functions
 
 ```
 .
 ├── src
-│   ├── functions               # Lambda configuration and source code folder
-│   │   ├── hello
-│   │   │   ├── handler.ts      # `Hello` lambda source code
-│   │   │   ├── index.ts        # `Hello` lambda Serverless configuration
-│   │   │   ├── mock.json       # `Hello` lambda input parameter, if any, for local invocation
-│   │   │   └── schema.ts       # `Hello` lambda input event JSON-Schema
+│   ├── functions                                 # Lambda configuration and source code folder
+│   │   ├── authorizer
+│   │   │   ├── handler.ts                        # `Authorizer` lambda source code
+│   │   │   ├── index.ts                          # `Authorizer` lambda Serverless configuration
+│   │   ├── outlays
+│   │   │   ├── handler.ts                        # `Create Outlay` lambda source code
+│   │   │   ├── index.ts                          # `Create Outlay` lambda Serverless configuration
+│   │   │   └── schema.ts                         # `Create Outlay` lambda input event JSON-Schema
 │   │   │
-│   │   └── index.ts            # Import/export of all lambda configurations
+│   │   └── index.ts                              # Import/export of all lambda configurations
 │   │
-│   └── libs                    # Lambda shared code
-│       └── apiGateway.ts       # API Gateway specific helpers
-│       └── handlerResolver.ts  # Sharable library for resolving lambda handlers
-│       └── lambda.ts           # Lambda middleware
+│   ├── libs                                      # Lambda shared code
+│   │   └── apiGateway.ts                         # API Gateway specific helpers
+│   │   └── handlerResolver.ts                    # Sharable library for resolving lambda handlers
+│   │   └── lambda.ts                             # Lambda middleware
+│   │
+│   ├── interfaces                                # Lambda shared interfaces
+│   │   └── dtos                                  # Lambda Data Transfer Objects
+│   │       └── create-outlay-dto.ts              # Data Transfer Object to create an outlay.
+│   │
+│   └── services                                  # API clients and services used by Lambdas
+│       ├── notion                                # Notion Service
+│           ├── client.ts                         # Notion API Client
+│           ├── create-card-payment-page.ts       # Service function to create a card payment page.
+│           ├── create-outlay-page.ts             # Service function to create an outlay page.
+│           ├── create-year-page.ts               # Service function to create a year page.
+│           └── utils.ts                          # Utility functions used by service functions.
 │
 ├── package.json
-├── serverless.ts               # Serverless service file
-├── tsconfig.json               # Typescript compiler configuration
-├── tsconfig.paths.json         # Typescript paths
-└── webpack.config.js           # Webpack configuration
+├── serverless.ts                                 # Serverless service file
+├── tsconfig.json                                 # Typescript compiler configuration
+├── tsconfig.paths.json                           # Typescript paths
 ```
 
 ### 3rd party libraries

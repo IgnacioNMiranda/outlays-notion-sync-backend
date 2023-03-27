@@ -1,7 +1,7 @@
 {
   "name": "outlays-notion-sync-backend",
   "version": "1.0.0",
-  "description": "Serverless aws-nodejs-typescript template",
+  "description": "Outlays Notion Sync App Backend",
   "main": "serverless.ts",
   "packageManager": "pnpm@7.29.1",
   "scripts": {
@@ -38,6 +38,6 @@
     "tsconfig-paths": "^4.1.2",
     "typescript": "^5.0.2"
   },
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "IgnacioNMiranda",
   "license": "MIT"
 }
