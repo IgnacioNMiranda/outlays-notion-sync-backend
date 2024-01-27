@@ -6,7 +6,7 @@ const schema: JSONSchema7 = {
     name: { type: 'string' },
     date: { type: 'string', format: 'date' },
     tags: { type: 'array', minItems: 1, items: { type: 'string' } },
-    price: { type: 'number', minimum: 1 },
+    price: { type: 'number' },
     paymentMethod: { type: 'string', minLength: 1 },
     installments: { type: 'number', default: 1 },
   },
