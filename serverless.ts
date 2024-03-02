@@ -7,7 +7,8 @@ const serverlessConfiguration: AWS = {
   service: 'outlays-notion-sync-backend',
   frameworkVersion: '3',
   useDotenv: true,
-  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-associate-waf'],
+  // plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-associate-waf'],
+  plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -40,46 +41,46 @@ const serverlessConfiguration: AWS = {
   // import the function via paths
   functions: { outlays, customLambdaAuthorizer },
   package: { individually: true },
-  resources: {
-    Resources: {
-      WAFRegionalWebACL: {
-        Type: 'AWS::WAFv2::WebACL',
-        Properties: {
-          Name: 'ApiGateway-HTTP-Flood-Prevent-Auto-${self:provider.stage}',
-          Scope: 'REGIONAL',
-          Description: 'WAF Regional Web ACL to Prevent HTTP Flood DDos Attack',
-          DefaultAction: {
-            Allow: {},
-          },
-          VisibilityConfig: {
-            SampledRequestsEnabled: true,
-            CloudWatchMetricsEnabled: true,
-            MetricName: 'ApiGateway-HTTP-Flood-Prevent-Metric',
-          },
-          Rules: [
-            {
-              Name: 'HTTP-Flood-Prevent-Rule',
-              Priority: 0,
-              Action: {
-                Block: {},
-              },
-              VisibilityConfig: {
-                SampledRequestsEnabled: true,
-                CloudWatchMetricsEnabled: true,
-                MetricName: 'HTTP-Flood-Prevent-Rule-Metric',
-              },
-              Statement: {
-                RateBasedStatement: {
-                  AggregateKeyType: 'IP',
-                  Limit: 2000,
-                },
-              },
-            },
-          ],
-        },
-      },
-    },
-  },
+  // resources: {
+  //   Resources: {
+  //     WAFRegionalWebACL: {
+  //       Type: 'AWS::WAFv2::WebACL',
+  //       Properties: {
+  //         Name: 'ApiGateway-HTTP-Flood-Prevent-Auto-${self:provider.stage}',
+  //         Scope: 'REGIONAL',
+  //         Description: 'WAF Regional Web ACL to Prevent HTTP Flood DDos Attack',
+  //         DefaultAction: {
+  //           Allow: {},
+  //         },
+  //         VisibilityConfig: {
+  //           SampledRequestsEnabled: true,
+  //           CloudWatchMetricsEnabled: true,
+  //           MetricName: 'ApiGateway-HTTP-Flood-Prevent-Metric',
+  //         },
+  //         Rules: [
+  //           {
+  //             Name: 'HTTP-Flood-Prevent-Rule',
+  //             Priority: 0,
+  //             Action: {
+  //               Block: {},
+  //             },
+  //             VisibilityConfig: {
+  //               SampledRequestsEnabled: true,
+  //               CloudWatchMetricsEnabled: true,
+  //               MetricName: 'HTTP-Flood-Prevent-Rule-Metric',
+  //             },
+  //             Statement: {
+  //               RateBasedStatement: {
+  //                 AggregateKeyType: 'IP',
+  //                 Limit: 2000,
+  //               },
+  //             },
+  //           },
+  //         ],
+  //       },
+  //     },
+  //   },
+  // },
   custom: {
     esbuild: {
       bundle: true,
@@ -91,11 +92,11 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
-    associateWaf: {
-      name: '${self:resources.Resources.WAFRegionalWebACL.Properties.Name}',
-      // Ref: https://stackoverflow.com/questions/67703857/using-aws-waf-with-serverless-associate-waf
-      version: 'V2',
-    },
+    // associateWaf: {
+    //   name: '${self:resources.Resources.WAFRegionalWebACL.Properties.Name}',
+    //   // Ref: https://stackoverflow.com/questions/67703857/using-aws-waf-with-serverless-associate-waf
+    //   version: 'V2',
+    // },
   },
 }
 
