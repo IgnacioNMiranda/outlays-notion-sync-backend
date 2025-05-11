@@ -8,7 +8,7 @@ For detailed instructions, please refer to the [documentation](https://www.serve
 
 Depending on your preferred package manager, follow the instructions below to deploy your project.
 
-> **Requirements**: NodeJS `lts/fermium (v.14.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
+> **Requirements**: NodeJS `lts/fermium (v.22.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
 
 ### Using Pnpm
 
@@ -22,6 +22,14 @@ Install it using `npm i -g pnpm`
 In order to test the functions locally, run the following command to raise a local AWS instance using serverless-offline:
 
 - `pnpm dev`
+
+Make sure you have downloaded the Dev credentials from Doppler using the Doppler CLI:
+
+```shell
+doppler login
+# Go through the login process, then:
+doppler secrets download --no-file --format yaml > .env.dev.yml -p outlays-notion-sync-backend -c dev
+```
 
 ## Template features
 

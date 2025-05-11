@@ -1,4 +1,3 @@
-import { environment } from '../../environment'
 import { notionClient } from './client'
 
 export const createYearPage = (yearName: string, parentDatabaseId: string) => {
@@ -7,7 +6,7 @@ export const createYearPage = (yearName: string, parentDatabaseId: string) => {
       database_id: parentDatabaseId,
     },
     properties: {
-      [environment.notion.yearsNamePropertyKey]: {
+      Name: {
         title: [
           {
             text: {

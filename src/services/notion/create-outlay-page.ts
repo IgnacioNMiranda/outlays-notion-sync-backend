@@ -6,7 +6,7 @@ export const createOutlayPage = async (data: CreateOutlayPageDTO, yearPageId: st
   return notionClient.pages.create({
     parent: { database_id: environment.notion.outlaysDatabaseId },
     properties: {
-      [environment.notion.namePropertyKey]: {
+      Name: {
         title: [
           {
             text: {
@@ -15,23 +15,23 @@ export const createOutlayPage = async (data: CreateOutlayPageDTO, yearPageId: st
           },
         ],
       },
-      [environment.notion.datePropertyKey]: {
+      'Purchase Date': {
         date: { start: data.date },
       },
-      [environment.notion.tagsPropertyKey]: {
+      Tags: {
         multi_select: data.tags.map((tag) => ({ name: tag })),
       },
-      [environment.notion.pricePropertyKey]: {
+      'Price (average)': {
         number: data.price,
       },
-      [environment.notion.paymentMethodPropertyKey]: {
+      'Payment method': {
         select: { name: data.paymentMethod },
       },
-      [environment.notion.purchaseYearPropertykey]: {
+      'Purchase year': {
         relation: [{ id: yearPageId }],
       },
       ...(cardPaymentPageId && {
-        [environment.notion.cardPaymentsPropertykey]: {
+        'Card Payments': {
           relation: [{ id: cardPaymentPageId }],
         },
       }),

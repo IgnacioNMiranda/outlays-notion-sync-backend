@@ -15,6 +15,7 @@ const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewa
       ],
     },
   }
+
   if (event.authorizationToken === `Bearer ${environment.authToken}`) return policy
 
   policy.policyDocument.Statement[0].Effect = 'Deny'

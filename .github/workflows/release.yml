@@ -29,12 +29,12 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 9
 
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -44,7 +44,7 @@ jobs:
         run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
 
       - name: Creating env file
-        run: doppler secrets download --no-file --format yaml > .env.yml
+        run: doppler secrets download --no-file --format yaml > .env.prod.yml
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 

@@ -1,25 +1,26 @@
 {
   "name": "outlays-notion-sync-backend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Outlays Notion Sync App Backend",
   "main": "serverless.ts",
-  "packageManager": "pnpm@7.29.1",
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "sls offline start",
-    "deploy-sls": "sls deploy"
+    "deploy:sls": "sls deploy",
+    "destroy:sls-dev": "sls remove --stage dev"
   },
   "engines": {
-    "node": ">=18.14.0"
+    "node": ">=22.15.0"
   },
   "dependencies": {
-    "@middy/core": "^4.2.7",
-    "@middy/http-json-body-parser": "^4.2.7",
-    "@notionhq/client": "^2.2.3"
+    "@middy/core": "6.2.4",
+    "@middy/http-json-body-parser": "6.2.4",
+    "@notionhq/client": "3.0.1"
   },
   "devDependencies": {
-    "@serverless/typescript": "^3.27.0",
-    "@types/aws-lambda": "^8.10.114",
-    "@types/node": "^18.15.3",
+    "@serverless/typescript": "4.14.1",
+    "@types/aws-lambda": "^8.10.149",
+    "@types/node": "22.15.17",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "esbuild": "^0.17.12",
     "eslint": "^8.36.0",
@@ -28,15 +29,14 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "json-schema-to-ts": "^2.7.2",
+    "json-schema-to-ts": "3.1.1",
     "prettier": "^2.8.5",
-    "serverless": "^3.28.1",
-    "serverless-associate-waf": "^1.2.1",
-    "serverless-esbuild": "^1.41.0",
-    "serverless-offline": "^12.0.4",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.1.2",
-    "typescript": "^5.0.2"
+    "serverless": "4.14.3",
+    "serverless-associate-waf": "1.2.1",
+    "serverless-offline": "14.4.0",
+    "ts-node": "10.9.2",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "5.8.3"
   },
   "author": "IgnacioNMiranda",
   "license": "MIT"
