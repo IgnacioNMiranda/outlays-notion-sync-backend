@@ -1,6 +1,6 @@
-import { JSONSchema7 } from 'json-schema-to-ts'
+import type { JSONSchema } from 'json-schema-to-ts'
 
-const schema: JSONSchema7 = {
+const schema: JSONSchema = {
   type: 'object',
   properties: {
     name: { type: 'string' },
@@ -12,4 +12,4 @@ const schema: JSONSchema7 = {
   },
   required: ['name', 'date', 'tags', 'price', 'paymentMethod'],
 } as const
-export default schema as any
+export default schema as string

@@ -1,15 +1,15 @@
+import type { CreateOutlayPageDTO } from '@interfaces/dtos/create-outlay-dto'
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway'
 import { formatJSONResponse } from '@libs/api-gateway'
 import { middyfy } from '@libs/lambda'
-import { CreateOutlayPageDTO } from '@interfaces/dtos/create-outlay-dto'
 import { createOutlayPage } from '@services/notion/create-outlay-page'
 
-import schema from './schema'
-import { getCardPaymentPageId, getTagsAndPaymentMethods, getYearPageId } from '../../services/notion/utils'
+import type { CreatePageResponse } from '@notionhq/client/build/src/api-endpoints'
 import { environment } from '../../environment'
-import { CreatePageResponse } from '@notionhq/client/build/src/api-endpoints'
+import { getCardPaymentPageId, getTagsAndPaymentMethods, getYearPageId } from '../../services/notion/utils'
+import type schema from './schema'
 
-const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async event => {
   let body: CreateOutlayPageDTO
   if (typeof event.body === 'string') body = JSON.parse(event.body) as CreateOutlayPageDTO
   else body = event.body as CreateOutlayPageDTO
@@ -17,7 +17,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
   try {
     const { tags, paymentMethods } = await getTagsAndPaymentMethods()
 
-    if (!body.tags.every((tag) => tags.find((notionTag) => notionTag === tag))) throw new Error('Invalid Tags')
+    if (!body.tags.every(tag => tags.find(notionTag => notionTag === tag))) throw new Error('Invalid Tags')
     if (!paymentMethods.includes(body.paymentMethod)) throw new Error('Invalid Payment Method')
 
     const createOutlay = async (data: CreateOutlayPageDTO, date: Date) => {
@@ -42,7 +42,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     const outlaysPromises: Promise<CreatePageResponse>[] = []
     for (let i = 0; i < installments; i++) {
       const outlayName = `${body.name}${installments > 1 ? ` (${i + 1})` : ''}`
-      let outlayDate = new Date(body.date)
+      const outlayDate = new Date(body.date)
 
       if (i > 0) {
         outlayDate.setMonth(outlayDate.getMonth() + i)

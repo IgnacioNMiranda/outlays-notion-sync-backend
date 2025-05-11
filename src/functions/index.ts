@@ -1,1 +1,1 @@
-export { default as outlays } from './outlays';
+export { default as outlays } from './outlays'

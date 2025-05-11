@@ -6,9 +6,9 @@ import { createYearPage } from './create-year-page'
 export const getYearPageId = async (year: string) => {
   let yearPageId: string
   const yearPages = await notionClient.databases.query({ database_id: environment.notion.yearsDatabaseId })
-  const yearPage = yearPages.results.find((result) => {
+  const yearPage = yearPages.results.find(result => {
     if ('properties' in result) {
-      const field = result.properties['Name']
+      const field = result.properties.Name
       if ('title' in field && 'text' in field.title[0]) {
         return field.title[0].text.content === year
       }
@@ -33,7 +33,7 @@ export const getCardPaymentPageId = async (paymentMethod: string, monthName: str
     const cardPaymentPages = await notionClient.databases.query({
       database_id: environment.notion.cardPaymentsDatabaseId,
     })
-    const cardPaymentPage = cardPaymentPages.results.find((result) => {
+    const cardPaymentPage = cardPaymentPages.results.find(result => {
       if ('properties' in result) {
         const field = result.properties.Date
         if ('title' in field && 'text' in field.title[0]) {
@@ -60,10 +60,10 @@ export const getTagsAndPaymentMethods = async () => {
     const tagsProperty = data.properties.Tags
     const paymentMethodsProperty = data.properties['Payment method']
     if (tagsProperty && 'multi_select' in tagsProperty) {
-      tags.push(...tagsProperty.multi_select.options.map((option) => option.name))
+      tags.push(...tagsProperty.multi_select.options.map(option => option.name))
     }
     if (paymentMethodsProperty && 'select' in paymentMethodsProperty) {
-      paymentMethods.push(...paymentMethodsProperty.select.options.map((option) => option.name))
+      paymentMethods.push(...paymentMethodsProperty.select.options.map(option => option.name))
     }
   }
   return { tags, paymentMethods }

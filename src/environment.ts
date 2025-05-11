@@ -4,7 +4,7 @@ export const environment = {
 
     outlaysDatabaseId: process.env.NOTION_OUTLAYS_DATABASE_ID,
 
-    creditChargeDay: parseInt(process.env.NOTION_CREDIT_CHARGE_DAY, 10),
+    creditChargeDay: Number.parseInt(process.env.NOTION_CREDIT_CHARGE_DAY, 10),
 
     yearsDatabaseId: process.env.NOTION_YEARS_DATABASE_ID,
 

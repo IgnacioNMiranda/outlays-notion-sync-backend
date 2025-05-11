@@ -3,9 +3,13 @@
   "version": "1.1.0",
   "description": "Outlays Notion Sync App Backend",
   "main": "serverless.ts",
+  "author": "IgnacioNMiranda",
+  "license": "MIT",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "sls offline start",
+    "lint": "npx @biomejs/biome lint --write ./src serverless.ts",
+    "format": "npx @biomejs/biome check --write --organize-imports-enabled=true ./src serverless.ts",
     "deploy:sls": "sls deploy",
     "destroy:sls-dev": "sls remove --stage dev"
   },
@@ -18,19 +22,14 @@
     "@notionhq/client": "3.0.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@serverless/typescript": "4.14.1",
-    "@types/aws-lambda": "^8.10.149",
+    "@types/aws-lambda": "8.10.149",
     "@types/node": "22.15.17",
-    "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "esbuild": "^0.17.12",
-    "eslint": "^8.36.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-config-standard-with-typescript": "^34.0.1",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
+    "esbuild": "0.25.4",
+    "husky": "9.1.7",
     "json-schema-to-ts": "3.1.1",
-    "prettier": "^2.8.5",
+    "lint-staged": "16.0.0",
     "serverless": "4.14.3",
     "serverless-associate-waf": "1.2.1",
     "serverless-offline": "14.4.0",
@@ -38,6 +37,12 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "5.8.3"
   },
-  "author": "IgnacioNMiranda",
-  "license": "MIT"
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --files-ignore-unknown=true",
+      "biome check --write --no-errors-on-unmatched",
+      "biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true",
+      "biome format --write --no-errors-on-unmatched"
+    ]
+  }
 }

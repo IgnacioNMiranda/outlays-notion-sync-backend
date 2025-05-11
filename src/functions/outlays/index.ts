@@ -1,5 +1,5 @@
 import { handlerPath } from '@libs/handler-resolver'
-import { AWS } from '@serverless/typescript'
+import type { AWS } from '@serverless/typescript'
 import schema from './schema'
 
 const outlays: AWS['functions'][0] = {

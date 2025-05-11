@@ -1,7 +1,7 @@
 import type { AWS } from '@serverless/typescript'
 
-import outlays from '@functions/outlays'
 import customLambdaAuthorizer from '@functions/authorizer'
+import outlays from '@functions/outlays'
 
 const serverlessConfiguration: AWS = {
   service: 'outlays-notion-sync-backend',

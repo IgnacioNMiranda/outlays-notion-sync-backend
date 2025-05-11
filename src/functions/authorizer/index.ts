@@ -1,5 +1,5 @@
 import { handlerPath } from '@libs/handler-resolver'
-import { AWS } from '@serverless/typescript'
+import type { AWS } from '@serverless/typescript'
 
 export const authorizer: AWS['functions'][0] = {
   memorySize: 256,

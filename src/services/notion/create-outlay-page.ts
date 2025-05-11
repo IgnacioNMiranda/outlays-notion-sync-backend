@@ -1,4 +1,4 @@
-import { CreateOutlayPageDTO } from '@interfaces/dtos/create-outlay-dto'
+import type { CreateOutlayPageDTO } from '@interfaces/dtos/create-outlay-dto'
 import { environment } from '../../environment'
 import { notionClient } from './client'
 
@@ -19,7 +19,7 @@ export const createOutlayPage = async (data: CreateOutlayPageDTO, yearPageId: st
         date: { start: data.date },
       },
       Tags: {
-        multi_select: data.tags.map((tag) => ({ name: tag })),
+        multi_select: data.tags.map(tag => ({ name: tag })),
       },
       'Price (average)': {
         number: data.price,
