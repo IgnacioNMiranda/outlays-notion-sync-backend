@@ -18,7 +18,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async event =
     const { tags, paymentMethods } = await getTagsAndPaymentMethods()
 
     if (!body.tags.every(tag => tags.find(notionTag => notionTag === tag))) throw new Error('Invalid Tags')
-    if (!paymentMethods.includes(body.paymentMethod)) throw new Error('Invalid Payment Method')
+    if (!body.paymentMethod) body.paymentMethod = 'Transfer'
+      else if (!paymentMethods.includes(body.paymentMethod)) throw new Error('Invalid Payment Method')
 
     const createOutlay = async (data: CreateOutlayPageDTO, date: Date) => {
       const year = `${date.getFullYear()}`
@@ -26,7 +27,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async event =
       // date.getDate() starts in 0
       if (date.getDate() + 1 >= environment.notion.creditChargeDay) {
         const dateWithPlusMonth = new Date(date)
-        // If the credit charge day has passed, the outlay has to be considered in the next month
+        // If the credit charge day has passed, the outlay has to be considered for the next month
         dateWithPlusMonth.setMonth(date.getMonth() + 1)
         monthName = dateWithPlusMonth.toLocaleString('en-US', { month: 'long' })
       }
@@ -37,7 +38,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async event =
     }
 
     const installments = body.installments ?? 1
-    const price = body.price / installments
+    let price = body.price / installments
+    if (body.type === 'Refund') price = price * -1
 
     const outlaysPromises: Promise<CreatePageResponse>[] = []
     for (let i = 0; i < installments; i++) {

@@ -7,7 +7,7 @@
   "license": "MIT",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "dev": "sls offline start",
+    "dev": "sls offline start --reloadHandler",
     "lint": "npx @biomejs/biome lint --write ./src serverless.ts",
     "format": "npx @biomejs/biome check --write --organize-imports-enabled=true ./src serverless.ts",
     "deploy:sls": "sls deploy",
