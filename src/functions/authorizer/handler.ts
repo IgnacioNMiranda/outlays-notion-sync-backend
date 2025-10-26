@@ -10,7 +10,7 @@ const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewa
         {
           Action: 'execute-api:Invoke',
           Effect: 'Allow',
-          Resource: event.methodArn,
+          Resource: environment.isOffline ? '*' : event.methodArn,
         },
       ],
     },

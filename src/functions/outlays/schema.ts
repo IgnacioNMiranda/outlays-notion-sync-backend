@@ -7,10 +7,10 @@ const schema: JSONSchema = {
     date: { type: 'string', format: 'date' },
     tags: { type: 'array', minItems: 1, items: { type: 'string' } },
     price: { type: 'number' },
-    type: { type: 'string' },
+    refund: { type: 'number' },
     paymentMethod: { type: 'string', minLength: 1 },
     installments: { type: 'number', default: 1 },
   },
-  required: ['name', 'date', 'tags', 'price', 'type'],
+  required: ['name', 'date', 'tags', 'price'],
 } as const
 export default schema as string

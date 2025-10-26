@@ -19,7 +19,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async event =
 
     if (!body.tags.every(tag => tags.find(notionTag => notionTag === tag))) throw new Error('Invalid Tags')
     if (!body.paymentMethod) body.paymentMethod = 'Transfer'
-      else if (!paymentMethods.includes(body.paymentMethod)) throw new Error('Invalid Payment Method')
+    else if (!paymentMethods.includes(body.paymentMethod)) throw new Error('Invalid Payment Method')
 
     const createOutlay = async (data: CreateOutlayPageDTO, date: Date) => {
       const year = `${date.getFullYear()}`
@@ -38,13 +38,28 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async event =
     }
 
     const installments = body.installments ?? 1
-    let price = body.price / installments
-    if (body.type === 'Refund') price = price * -1
+    const price = body.price / installments
+    const outlayDate = new Date(body.date)
 
     const outlaysPromises: Promise<CreatePageResponse>[] = []
+
+    // Create additional Refund record if data is available
+    if (body.refund) {
+      let refund = body.refund
+      if (refund > 0) refund = refund * -1
+      const refundData: CreateOutlayPageDTO = {
+        name: `${body.name} Refund`,
+        date: outlayDate.toISOString().split('T')[0],
+        tags: body.tags,
+        paymentMethod: 'Transfer',
+        price: refund,
+      }
+      console.info(`Creating '${body.name}' Outlay *Refund`)
+      outlaysPromises.push(createOutlay(refundData, outlayDate))
+    }
+
     for (let i = 0; i < installments; i++) {
       const outlayName = `${body.name}${installments > 1 ? ` (${i + 1})` : ''}`
-      const outlayDate = new Date(body.date)
 
       if (i > 0) {
         outlayDate.setMonth(outlayDate.getMonth() + i)

@@ -83,6 +83,11 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    // Local development
+    // 'serverless-offline': {
+    //   noAuth: true,
+    // },
+
     // associateWaf: {
     //   name: '${self:resources.Resources.WAFRegionalWebACL.Properties.Name}',
     //   // Ref: https://stackoverflow.com/questions/67703857/using-aws-waf-with-serverless-associate-waf

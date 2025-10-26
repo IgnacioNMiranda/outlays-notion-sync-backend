@@ -3,7 +3,7 @@ export interface CreateOutlayPageDTO {
   date: string
   tags: string[]
   price: number
-  type: 'Outlay' | 'Refund'
+  refund?: number
   paymentMethod: string
   installments?: number
 }

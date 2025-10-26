@@ -11,4 +11,5 @@ export const environment = {
     cardPaymentsDatabaseId: process.env.NOTION_CARD_PAYMENTS_DATABASE_ID,
   },
   authToken: process.env.AUTH_TOKEN,
+  isOffline: process.env.IS_OFFLINE,
 }
